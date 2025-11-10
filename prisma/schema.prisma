@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model devices {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @db.VarChar(100)
+  soil_moisture_logs soil_moisture_logs[]
+  water_containers   water_containers[]
+  watering_logs      watering_logs[]
+}
+
+model soil_moisture_logs {
+  id          Int       @id @default(autoincrement())
+  device_id   Int
+  moist_value Int
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  devices     devices   @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_soil_device_id")
+}
+
+model water_capacity_config {
+  id                         Int     @id @default(autoincrement())
+  min_water_capacity_percent Decimal @default(10) @db.Decimal(5, 2)
+}
+
+model water_capacity_logs {
+  id                Int              @default(autoincrement())
+  container_id      Int              @default(autoincrement())
+  current_height_cm Decimal          @db.Decimal(5, 2)
+  current_litres    Decimal          @db.Decimal(6, 2)
+  created_at        DateTime?        @default(now()) @db.Timestamp(6)
+  water_containers  water_containers @relation(fields: [container_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_capacity_container_id")
+
+  @@id([id, container_id])
+}
+
+model water_containers {
+  id                  Int                   @id @default(autoincrement())
+  device_id           Int
+  height_cm           Decimal               @db.Decimal(5, 2)
+  capacity_litres     Decimal               @db.Decimal(6, 2)
+  water_capacity_logs water_capacity_logs[]
+  devices             devices               @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_water_device_id")
+}
+
+model watering_config {
+  id                        Int     @id @default(autoincrement())
+  min_soil_moisture_percent Decimal @default(80) @db.Decimal(5, 2)
+  duration_ms               Int     @default(2000)
+  automated                 Boolean @default(true)
+}
+
+model watering_logs {
+  id          Int       @id @default(autoincrement())
+  device_id   Int
+  duration_ms Int
+  manual      Boolean   @default(false)
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  devices     devices   @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_watering_device_id")
+}

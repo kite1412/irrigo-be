@@ -1,0 +1,26 @@
+{
+  "name": "irrigo-be",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./server.js"
+  },
+  "author": "tomy",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "joi": "^18.0.1",
+    "mqtt": "^5.14.1",
+    "prisma": "^6.19.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
