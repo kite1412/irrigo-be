@@ -3,7 +3,7 @@ import {
   createWateringLog,
 } from '../repositories/wateringLog.repository.js';
 import { findDeviceById } from '../repositories/device.repository.js';
-import broadcast from '../libs/broadcast.js';
+import { broadcast } from './websocket.service.js';
 
 export const getWateringLogsByDeviceId = async (deviceId) => {
   const device = await findDeviceById(deviceId);
