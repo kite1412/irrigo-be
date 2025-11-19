@@ -3,9 +3,9 @@ import prisma from '../libs/prisma.js';
 export const findAllWaterContainersByDeviceId = async (deviceId) => {
   return await prisma.water_containers.findMany({
     where: { device_id: deviceId },
-    include: {
-      devices: true,
-    },
+    // include: {
+    //   devices: true,
+    // },
   });
 };
 

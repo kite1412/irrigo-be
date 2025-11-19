@@ -21,5 +21,12 @@ export const createNewWateringLog = async (value) => {
     error.status = 404;
     throw error;
   }
+  broadcast({
+    type: 'watering_log',
+    device_id: value.device_id,
+    manual: value.manual,
+    duration_ms: value.duration_ms,
+    timestamp: new Date(),
+  });
   return await createWateringLog(value);
 };

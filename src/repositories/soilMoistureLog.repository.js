@@ -5,9 +5,6 @@ export const findAllSoilMoistureLogsByDeviceId = async (deviceId) => {
     where: {
       device_id: deviceId,
     },
-    include: {
-      devices: true,
-    },
   });
 };
 

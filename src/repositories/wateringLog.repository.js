@@ -3,9 +3,9 @@ import prisma from '../libs/prisma.js';
 export const findAllWateringLogsByDeviceId = async (deviceId) => {
   return await prisma.watering_logs.findMany({
     where: { device_id: deviceId },
-    include: {
-      devices: true,
-    },
+    // include: {
+    //   devices: true,
+    // },
   });
 };
 

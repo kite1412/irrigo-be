@@ -7,9 +7,9 @@ export const findAllWaterCapacityLogsByDeviceId = async (deviceId) => {
         device_id: deviceId,
       },
     },
-    include: {
-      water_containers: true,
-    },
+    // include: {
+    //   water_containers: true,
+    // },
   });
 };
 

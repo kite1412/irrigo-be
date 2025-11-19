@@ -3,7 +3,7 @@ import prisma from '../libs/prisma.js';
 export const findAllLightIntensityLogsByDeviceId = async (deviceId) => {
   return await prisma.light_intensity_logs.findMany({
     where: { device_id: deviceId },
-    include: { devices: true },
+    // include: { devices: true },
   });
 };
 

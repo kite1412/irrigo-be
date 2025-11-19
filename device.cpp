@@ -183,6 +183,12 @@ void waterPlant(bool isManual = false) {
   delay(durationMs);
   digitalWrite(RELAY_PIN, HIGH);
   Serial.println("Pompa mati");
+  StaticJsonDocument<64> doc;
+  doc["manual"] = isManual;
+  doc["duration_ms"] = durationMs;
+  char buffer[64];
+  serializeJson(doc, buffer);
+  client.publish("devices/1/watering", buffer);
   lastPumpTime = millis();
 }
 
