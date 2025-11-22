@@ -5,6 +5,8 @@ import {
 import { findDeviceById } from '../repositories/device.repository.js';
 import { findFirstWaterContainerByDeviceId } from '../repositories/waterContainer.repository.js';
 import { broadcast } from './websocket.service.js';
+import { sendNotification } from './fcm.service.js';
+import { getWaterCapacityConfig } from './waterCapacityConfig.service.js';
 
 export const getWaterCapacityLogsByDeviceId = async (deviceId) => {
   const device = await findDeviceById(deviceId);
@@ -17,22 +19,11 @@ export const getWaterCapacityLogsByDeviceId = async (deviceId) => {
 };
 
 export const createNewWaterCapacityLog = async (data) => {
-  //   const device = await findDeviceById(waterCapacityData.device_id);
-  //   if (!device) {
-  //     const error = new Error('Device not found');
-  //     error.status = 404;
-  //     throw error;
-  //   }
-
   const container = await findFirstWaterContainerByDeviceId(data.device_id);
-  //   if (!container) {
-  //     const error = new Error('Water container not found');
-  //     error.status = 404;
-  //     throw error;
-  //   }
-  //   console.log('container found:', container.id);
+  const config = await getWaterCapacityConfig();
   const currHeightCm = container.height_cm - data.distance;
   const currLitres = (currHeightCm / container.height_cm) * container.capacity_litres;
+  const currPercent = (currHeightCm / container.height_cm) * 100;
 
   const WaterCapacityData = {
     current_height_cm: currHeightCm,
@@ -50,6 +41,14 @@ export const createNewWaterCapacityLog = async (data) => {
     current_litres: currLitres,
     timestamp: new Date(),
   });
+
+  if (currPercent <= config.min_water_capacity_percent) {
+    await sendNotification(
+      'Low Water Capacity Alert',
+      `Water capacity is at ${currPercent.toFixed(2)}%. Please refill the water container.`,
+      { current_percent: currPercent.toFixed(2), timestamp: new Date() }
+    );
+  }
 
   return log;
 };

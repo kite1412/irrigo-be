@@ -72,3 +72,9 @@ model light_intensity_logs {
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   devices    devices   @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_light_device_id")
 }
+
+model device_tokens {
+  id         Int    @id @default(autoincrement())
+  android_id String @db.VarChar(64)
+  fcm_token  String
+}

@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import client from './services/mqtt.service.js';
 import soilMoistureLogRoutes from './routes/soilMoistureLog.route.js';
 import deviceRoutes from './routes/device.route.js';
 import waterContainerRoutes from './routes/waterContainer.route.js';
@@ -9,6 +8,7 @@ import wateringLogRoutes from './routes/wateringLog.route.js';
 import lightIntensityLogRoutes from './routes/lightIntensityLog.route.js';
 import wateringConfigRoutes from './routes/wateringConfig.route.js';
 import waterCapacityConfigRoutes from './routes/waterCapacityConfig.route.js';
+import deviceTokenRoutes from './routes/deviceToken.route.js';
 // import cors from 'cors';
 
 dotenv.config();
@@ -26,5 +26,6 @@ app.use('/water-capacity-logs', waterCapacityLogRoutes);
 app.use('/watering-logs', wateringLogRoutes);
 app.use('/watering-config', wateringConfigRoutes);
 app.use('/water-capacity-config', waterCapacityConfigRoutes);
+app.use('/register-device-token', deviceTokenRoutes);
 
 export default app;
