@@ -16,7 +16,13 @@ export const sendNotification = async (title, body, data = {}) => {
   };
 
   try {
-    await admin.messaging().sendEachForMulticast(message);
+    const response = await admin.messaging().sendEachForMulticast(message);
+
+    response.responses.forEach((res, idx) => {
+      if (!res.success) {
+        console.error('Error token:', tokens[idx], res.error);
+      }
+    });
   } catch (error) {
     console.error('Error sending FCM notification:', error);
   }
