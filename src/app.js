@@ -9,6 +9,7 @@ import lightIntensityLogRoutes from './routes/lightIntensityLog.route.js';
 import wateringConfigRoutes from './routes/wateringConfig.route.js';
 import waterCapacityConfigRoutes from './routes/waterCapacityConfig.route.js';
 import deviceTokenRoutes from './routes/deviceToken.route.js';
+import fcmRoutes from './routes/fcm.route.js';
 // import cors from 'cors';
 
 dotenv.config();
@@ -27,5 +28,6 @@ app.use('/watering-logs', wateringLogRoutes);
 app.use('/watering-config', wateringConfigRoutes);
 app.use('/water-capacity-config', waterCapacityConfigRoutes);
 app.use('/register-device-token', deviceTokenRoutes);
+app.use('/fcm', fcmRoutes);
 
 export default app;

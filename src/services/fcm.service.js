@@ -27,3 +27,7 @@ export const sendNotification = async (title, body, data = {}) => {
     console.error('Error sending FCM notification:', error);
   }
 };
+
+export const sendDummyNotification = async (msg) => {
+  await sendNotification('Dummy Notification', msg, { type: 'dummy', timestamp: new Date() });
+};
