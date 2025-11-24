@@ -40,7 +40,7 @@ export const addDevice = async (req, res) => {
 };
 
 export const modifyDevice = async (req, res) => {
-  const { deviceId } = req.params;
+  const { id } = req.params;
   const deviceData = req.body;
   try {
     const { error, value } = deviceSchema.validate(deviceData);
@@ -50,7 +50,7 @@ export const modifyDevice = async (req, res) => {
         message: error.details[0].message,
       });
     }
-    const updatedDevice = await updateExistingDevice(Number(deviceId), value);
+    const updatedDevice = await updateExistingDevice(Number(id), value);
     res.status(200).json({ success: true, data: updatedDevice });
   } catch (error) {
     return res.status(error.status || 500).json({
@@ -61,9 +61,9 @@ export const modifyDevice = async (req, res) => {
 };
 
 export const removeDevice = async (req, res) => {
-  const { deviceId } = req.params;
+  const { id } = req.params;
   try {
-    await deleteExistingDevice(Number(deviceId));
+    await deleteExistingDevice(Number(id));
     res.status(200).json({ success: true, message: 'Device deleted successfully' });
   } catch (error) {
     return res.status(error.status || 500).json({
