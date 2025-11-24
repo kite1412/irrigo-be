@@ -43,11 +43,13 @@ export const createNewWaterCapacityLog = async (data) => {
   });
   // gunakan bahasa indo untuk pesannya
   if (currPercent <= config.min_water_capacity_percent) {
-    await sendNotification(
-      'Peringatan Kapasitas Air Rendah',
-      `Kapasitas air saat ini ${currPercent.toFixed(2)}%. Segera isi ulang air`,
-      { type: 'water_capacity_low', current_percent: currPercent.toFixed(2), timestamp: new Date() }
-    );
+    await sendNotification({
+      type: 'water_capacity_low',
+      title: 'Peringatan Kapasitas Air Rendah',
+      body: `Kapasitas air saat ini ${currPercent.toFixed(2)}%. Segera isi ulang air`,
+      current_percent: currPercent.toFixed(2),
+      timestamp: new Date(),
+    });
   }
 
   return log;

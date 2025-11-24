@@ -1,7 +1,7 @@
 import admin from '../config/firebase.js';
 import { getAllDeviceTokens } from './deviceToken.service.js';
 
-export const sendNotification = async (title, body, data = {}) => {
+export const sendNotification = async (data = {}) => {
   const deviceTokens = await getAllDeviceTokens();
   console.log(deviceTokens);
   if (deviceTokens.length === 0) {
@@ -12,7 +12,7 @@ export const sendNotification = async (title, body, data = {}) => {
   const tokens = deviceTokens.map((dt) => dt.fcm_token);
   const message = {
     tokens,
-    notification: { title, body },
+    // notification: { title, body },
     data: Object.fromEntries(Object.entries(data).map(([key, value]) => [key, String(value)])),
   };
 
@@ -29,6 +29,6 @@ export const sendNotification = async (title, body, data = {}) => {
   }
 };
 
-export const sendDummyNotification = async (msg) => {
-  await sendNotification('Dummy Notification', msg, { type: 'dummy', timestamp: new Date() });
+export const sendDummyNotification = async (title, body) => {
+  await sendNotification({ type: 'dummy', title, body, timestamp: new Date() });
 };

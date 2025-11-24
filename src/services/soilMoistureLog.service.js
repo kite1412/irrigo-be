@@ -44,15 +44,13 @@ export const createNewSoilMoistureLog = async (value) => {
   const config = await getWateringConfig();
   // kirim notifikasi jika di bawah threshold dan automated watering nonaktif
   if (percent <= config.min_soil_moisture_percent && !config.automated) {
-    await sendNotification(
-      'Peringatan Kelembaban Tanah Rendah',
-      `Kelembaban tanah saat ini ${percent.toFixed(2)}%. Segera siram tanaman`,
-      {
-        type: 'soil_moisture_below_min',
-        moisture_percentage: percent.toFixed(2),
-        timestamp: new Date(),
-      }
-    );
+    await sendNotification({
+      type: 'soil_moisture_below_min',
+      title: 'Peringatan Kelembaban Tanah Rendah',
+      body: `Kelembaban tanah saat ini ${percent.toFixed(2)}%. Segera siram tanaman`,
+      moisture_percentage: percent.toFixed(2),
+      timestamp: new Date(),
+    });
   }
   return log;
 };
