@@ -41,12 +41,12 @@ export const createNewWaterCapacityLog = async (data) => {
     current_litres: currLitres,
     timestamp: new Date(),
   });
-
+  // gunakan bahasa indo untuk pesannya
   if (currPercent <= config.min_water_capacity_percent) {
     await sendNotification(
-      'Low Water Capacity Alert',
-      `Water capacity is at ${currPercent.toFixed(2)}%. Please refill the water container.`,
-      { current_percent: currPercent.toFixed(2), timestamp: new Date() }
+      'Peringatan Kapasitas Air Rendah',
+      `Kapasitas air saat ini ${currPercent.toFixed(2)}%. Segera isi ulang air`,
+      { type: 'water_capacity_low', current_percent: currPercent.toFixed(2), timestamp: new Date() }
     );
   }
 

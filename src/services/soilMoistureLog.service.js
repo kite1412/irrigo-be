@@ -3,6 +3,8 @@ import {
   createSoilMoistureLog,
 } from '../repositories/soilMoistureLog.repository.js';
 import { findDeviceById } from '../repositories/device.repository.js';
+import { getWateringConfig } from './wateringConfig.service.js';
+import { sendNotification } from './fcm.service.js';
 import { broadcast } from './websocket.service.js';
 
 const wetThreshold = 300;
@@ -29,12 +31,6 @@ export const getSoilMoistureLogsByDeviceId = async (deviceId) => {
 };
 
 export const createNewSoilMoistureLog = async (value) => {
-  //   const device = await findDeviceById(value.device_id);
-  //   if (!device) {
-  //     const error = new Error('Device not found');
-  //     error.status = 404;
-  //     throw error;
-  //   }
   const log = await createSoilMoistureLog(value);
   const percent = ((value.moist_value - wetThreshold) * 100) / (dryThreshold - wetThreshold);
   broadcast({
@@ -44,5 +40,19 @@ export const createNewSoilMoistureLog = async (value) => {
     moisture_percentage: percent,
     timestamp: new Date(),
   });
+
+  const config = await getWateringConfig();
+  // kirim notifikasi jika di bawah threshold dan automated watering nonaktif
+  if (percent <= config.min_soil_moisture_percent && !config.automated) {
+    await sendNotification(
+      'Peringatan Kelembaban Tanah Rendah',
+      `Kelembaban tanah saat ini ${percent.toFixed(2)}%. Segera siram tanaman`,
+      {
+        type: 'soil_moisture_below_min',
+        moisture_percentage: percent.toFixed(2),
+        timestamp: new Date(),
+      }
+    );
+  }
   return log;
 };
