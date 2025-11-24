@@ -75,6 +75,6 @@ model light_intensity_logs {
 
 model device_tokens {
   id         Int    @id @default(autoincrement())
-  android_id String @db.VarChar(64)
+  android_id String @unique(map: "unique_android_id") @db.VarChar(64)
   fcm_token  String
 }
