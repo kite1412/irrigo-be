@@ -1,4 +1,4 @@
-import { sendDummyNotification } from '../services/fcm.service';
+import { sendDummyNotification } from '../services/fcm.service.js';
 
 export const testNotification = async (req, res, next) => {
   try {

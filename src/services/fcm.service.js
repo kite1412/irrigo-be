@@ -3,6 +3,7 @@ import { getAllDeviceTokens } from './deviceToken.service.js';
 
 export const sendNotification = async (title, body, data = {}) => {
   const deviceTokens = await getAllDeviceTokens();
+  console.log(deviceTokens);
   if (deviceTokens.length === 0) {
     console.log('No device available for FCM notification.');
     return;

@@ -1,8 +1,8 @@
 import express from 'express';
-import { sendDummyNotification } from '../services/fcm.service.js';
+import { testNotification } from '../controllers/fcm.controller.js';
 
 const router = express.Router();
 
-router.post('/test', sendDummyNotification);
+router.post('/test', testNotification);
 
 export default router;
