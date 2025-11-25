@@ -10,6 +10,8 @@ import wateringConfigRoutes from './routes/wateringConfig.route.js';
 import waterCapacityConfigRoutes from './routes/waterCapacityConfig.route.js';
 import deviceTokenRoutes from './routes/deviceToken.route.js';
 import fcmRoutes from './routes/fcm.route.js';
+// import mqtt service
+import './services/mqtt.service.js';
 // import cors from 'cors';
 
 dotenv.config();
