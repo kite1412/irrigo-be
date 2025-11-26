@@ -1,10 +1,10 @@
-import {
-  findAllSoilMoistureLogsByDeviceId,
-  createSoilMoistureLog,
-} from '../repositories/soilMoistureLog.repository.js';
 import { findDeviceById } from '../repositories/device.repository.js';
-import { getWateringConfig } from './wateringConfig.service.js';
+import {
+  createSoilMoistureLog,
+  findAllSoilMoistureLogsByDeviceId,
+} from '../repositories/soilMoistureLog.repository.js';
 import { sendNotification } from './fcm.service.js';
+import { getWateringConfig } from './wateringConfig.service.js';
 import { broadcast } from './websocket.service.js';
 
 const wetThreshold = 300;
@@ -32,7 +32,7 @@ export const getSoilMoistureLogsByDeviceId = async (deviceId) => {
 
 export const createNewSoilMoistureLog = async (value) => {
   const log = await createSoilMoistureLog(value);
-  const percent = ((value.moist_value - wetThreshold) * 100) / (dryThreshold - wetThreshold);
+  const percent = ((dryThreshold - log.moist_value) * 100) / (dryThreshold - wetThreshold);
   broadcast({
     type: 'soil_moisture_log',
     id: log.id,
